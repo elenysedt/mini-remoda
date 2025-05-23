@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "name": "set 3 bodys",
+        "price": 15000,
+        "condition": "Como nuevo",
+        "image": "/images/set3bodys.png",
+        "size": "RN",
+        "brand": "Carters",
+        "stock": 5
+    },
+    {
+        "id": 2,
+        "name": "Set Bodys carters",
+        "price": 25000,
+        "condition": "como nuevo",
+        "image": "/images/setbodys.png",
+        "size": "6 meses",
+        "brand": "Carters",
+        "stock": 4
+    }
+]
