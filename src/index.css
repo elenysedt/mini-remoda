@@ -5,8 +5,8 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+ background-color: #d9e9f4; /* 🔄 Azul pastel claro */
+  color: #333; /* 🔄 Texto oscuro para buena visibilidad */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

@@ -19,16 +19,20 @@
 }
 
 button {
-    background-color: red;
+    background-color: #f575e8;
     color: white;
     padding: 5px 10px;
     border: none;
     cursor: pointer;
+    border-radius: 5px; /* 🔄 Bordes más suaves */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.15); /* 🔄 Sombra sutil */
 }
 
 button:hover {
-    background-color: darkred;
+    background-color: #e45ac7; /* 🔄 Un poco más oscuro en hover */
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2); /* 🔄 Intensificar sombra al pasar el mouse */
 }
+
 
 .cart-item {
     display: flex;
@@ -39,7 +43,7 @@ button:hover {
 }
 
 .cart-item button {
-    background-color: #007bff;
+    background-color: #f575e8;
     color: white;
     padding: 5px 10px;
     border: none;
@@ -48,7 +52,7 @@ button:hover {
 }
 
 .cart-item button:hover {
-    background-color: #0056b3;
+    background-color: #f575e8;
 }
 
 .cart-item img {
