@@ -13,6 +13,20 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+main {
+    width: 90vw;
+    height: auto;
+    min-height: 80vh;
+    background-color: #FDDDE6;
+    margin: 80px auto 0; /* 🔄 Ajusta el espacio debajo del navbar */
+    padding: 20px;
+    align-items: flex-start;
+    border-radius: 15px;
+}
+
+
+
+
 
 a {
   font-weight: 500;
@@ -23,13 +37,15 @@ a:hover {
   color: #535bf2;
 }
 
+
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+    background-color: #dae8f4; /* 🔄 Azul pastel claro */
+    margin: 0;
+    padding: 0;
+    display: block; /* 🔄 Elimina `flex` para evitar la alineación desigual */
+    width: 100vw;
 }
+
 
 h1 {
   font-size: 3.2em;

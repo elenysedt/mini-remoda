@@ -1,0 +1,70 @@
+/* ProductList.css */
+.product-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Ajuste dinámico de columnas */
+    gap: 20px;
+    justify-content: center; /* Centra los productos horizontalmente */
+    padding: 10px; /* Añade espacio alrededor */
+}
+
+.product-card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    min-width: 220px; /* 🔹 Asegura que cada producto tenga un tamaño mínimo */
+    max-width: 250px; /* 🔹 Evita que los productos sean demasiado grandes */
+}
+
+
+.product-image {
+    width: 100%;
+    max-width: 120px; /* 🔄 Tamaño más manejable */
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+
+.details-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.details-btn:hover {
+    background-color: #45a049;
+}
+
+.add-to-cart-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #45a049;
+}
+.error-message {
+    font-size: 18px;
+    color: #D32F2F;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}
+

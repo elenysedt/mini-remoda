@@ -1,3 +1,5 @@
+import "../estaticos/Footer.css";
+
 const Footer = () => {
     return (
         <footer style={{ backgroundColor: "#D0F0C0", padding: "20px", textAlign: "center" }}>

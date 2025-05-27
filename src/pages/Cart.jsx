@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
-import { collection, getDocs, updateDoc, doc, deleteDoc, getDoc } from "firebase/firestore";
+import { collection, getDocs, updateDoc, doc, deleteDoc, getDoc, writeBatch } from "firebase/firestore";
 import "./Cart.css";
 
 const Cart = ({ removeFromCart, updateQuantity, cart, setCart }) => {
-
     const [loading, setLoading] = useState(true);
-    console.log("setCart en Cart.jsx:", setCart);
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -20,7 +18,7 @@ const Cart = ({ removeFromCart, updateQuantity, cart, setCart }) => {
                     index === self.findIndex(p => p.id === item.id)
                 );
 
-                setCart(validItems); // 🔄 Guardar el carrito en el estado
+                setCart(validItems);
                 setLoading(false);
             } catch (error) {
                 console.error("Error al cargar carrito desde Firebase:", error);
@@ -38,35 +36,35 @@ const Cart = ({ removeFromCart, updateQuantity, cart, setCart }) => {
 
     // ✅ Función para vaciar carrito
     const clearCart = async () => {
+        if (!window.confirm("¿Seguro que quieres vaciar el carrito? Esta acción no se puede deshacer.")) return;
+
         try {
             const cartRef = collection(db, "cart");
             const querySnapshot = await getDocs(cartRef);
+            const batch = writeBatch(db);
 
             for (const docSnap of querySnapshot.docs) {
                 const item = docSnap.data();
-                if (!item) continue; // 🔄 Evitar errores si el documento está vacío
+                if (!item || typeof item.quantity !== "number" || isNaN(item.quantity)) continue;
 
-                // 🔄 Restaurar stock en Firebase antes de eliminar el producto del carrito
                 const productRef = doc(db, "ropabebe", item.id);
                 const productSnapshot = await getDoc(productRef);
+                let currentStock = productSnapshot.exists() ? productSnapshot.data().stock : 0;
 
-                if (productSnapshot.exists()) {
-                    const currentStock = productSnapshot.data().stock || 0;
-                    const updatedStock = currentStock + item.quantity; // 🔄 Devolver cantidad al stock
-                    await updateDoc(productRef, { stock: updatedStock });
+                if (typeof currentStock === "number" && !isNaN(currentStock)) {
+                    batch.update(productRef, { stock: Math.max(0, currentStock + item.quantity) });
                 }
 
-                // 🔄 Eliminar el producto del carrito
-                await deleteDoc(doc(db, "cart", docSnap.id));
+                batch.delete(docSnap.ref);
             }
 
-            setCart([]); // 🔄 Vaciar el estado del carrito
+            await batch.commit();
+            setCart([]);
+            console.log("Carrito vaciado correctamente y stock restaurado.");
         } catch (error) {
-            console.error("Error al vaciar el carrito y actualizar el stock:", error);
+            console.error("Error al vaciar el carrito y restaurar stock:", error);
         }
     };
-
-
 
     return (
         <div>
@@ -86,13 +84,17 @@ const Cart = ({ removeFromCart, updateQuantity, cart, setCart }) => {
                                 <p><strong>Marca:</strong> {item.brand}</p>
                                 <p><strong>Cantidad:</strong> {item.quantity}</p>
                                 <button onClick={() => updateQuantity(item.id, -1)}>➖</button>
-                                <button onClick={() => updateQuantity(item.id, 1)}>➕</button>
+                                <button
+                                    onClick={() => updateQuantity(item.id, 1)}
+                                    disabled={item.quantity >= item.stock} // ✅ Se desactiva si no hay stock disponible
+                                >
+                                    ➕
+                                </button>
                                 <button onClick={() => removeFromCart(item.id)}>Eliminar</button>
                             </div>
                         </div>
                     ))}
 
-                    {/* 🔄 Mostrar total y botón para vaciar carrito */}
                     <h3>Total: ${totalPrice.toFixed(2)} ARS</h3>
                     <button onClick={clearCart} style={{ backgroundColor: "#FDDDE6", padding: "10px", borderRadius: "5px" }}>
                         🗑️ Vaciar Carrito

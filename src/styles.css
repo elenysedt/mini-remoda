@@ -4,21 +4,30 @@ body {
     background-color: #dae8f4 !important; /* 🔄 Azul pastel claro */
     color: #2F3C4F !important; /* 🔄 Letras oscuras para buen contraste */
     font-family: 'Quicksand', sans-serif; /* 👶 Fuente más amigable */
-    margin: 0;
-    padding: 0;
 }
 
 h2, h3, p {
   color: #1F1F1F; /* 🔄 Letras más intensas para mayor legibilidad */
   font-size: 16px;
 }
+
+.product-container {
+    display: block;
+    flex-wrap: wrap; /* 🔄 Permite que los productos se ajusten en varias líneas si es necesario */
+    justify-content: center; /* 🔄 Asegura que los productos se centren horizontalmente */
+    gap: 20px; /* 🔄 Espacio entre tarjetas */
+    padding: 20px;
+}
+
 .product-card {
+    width: 250px; /* 🔄 Define un ancho fijo para cada tarjeta */
     background-color: #C6E2FF; /* Azul celeste */
     padding: 15px;
     border-radius: 10px;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
     transition: transform 0.2s ease-in-out;
 }
+
 
 .product-card:hover {
     transform: scale(1.05);
