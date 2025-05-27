@@ -12,12 +12,29 @@ nav {
 }
 
 nav ul {
+    list-style: none;
     display: flex;
     gap: 20px;
-    list-style: none;
-    background-color: #f4f4f4; /* 🔄 Recupera el color original */
-    padding: 10px;
 }
+
+nav ul li {
+    display: inline-block;
+}
+
+nav ul li a {
+    text-decoration: none;
+    padding: 10px;
+    color: #333;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+nav ul li a.active { /* 🔹 Se aplica automáticamente cuando la ruta está activa */
+    font-weight: bold;
+    color: #4CAF50; /* Verde para destacar */
+    border-bottom: 2px solid #4CAF50;
+}
+
 
 nav a {
     text-decoration: none;
