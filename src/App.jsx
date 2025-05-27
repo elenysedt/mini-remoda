@@ -73,53 +73,6 @@ const App = () => {
         }
     };
 
-    /*
-    const addToCart = async (product) => {
-        try {
-            const cartRef = doc(db, "cart", product.id);
-            const productRef = doc(db, "ropabebe", product.id);
-            const productSnapshot = await getDoc(productRef);
-            let currentStock = productSnapshot.exists() ? productSnapshot.data().stock : 0;
-            console.log('valor de stock:', currentStock);
-            if (currentStock <= 0) {
-                alert("❌ Este producto está agotado. No puedes agregar más.");
-                return;
-            }
-
-            const exists = cart.find(item => item.id === product.id);
-
-            console.log('valor de exists:', exists);
-
-            if (exists) {
-                if (exists.quantity <= currentStock) {
-                //if (currentStock <= exists.quantity) {
-                    const confirmAdd = window.confirm(`Actualmente tienes ${exists.quantity} unidades de "${product.name}". ¿Quieres agregar otra unidad?`);
-                    if (confirmAdd) {
-                        await updateDoc(cartRef, { quantity: exists.quantity + 1 });
-                        setCart(prevCart => prevCart.map(item => item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item));
-
-                        await updateDoc(productRef, { stock: currentStock - 1 });
-                        alert(`✅ Ahora tienes ${exists.quantity + 1} unidades de "${product.name}".`);
-                    }
-                } else {
-                    alert(`❌ Stock agotado. No puedes agregar más unidades.`);
-                }
-            } else {
-                const newCartItem = { id: product.id, name: product.name, price: product.price, quantity: 1, image: product.image };
-                await setDoc(cartRef, newCartItem);
-                setCart(prevCart => [...prevCart, newCartItem]);
-
-                await updateDoc(productRef, { stock: currentStock - 1 });
-                alert(`✅ Producto agregado: "${product.name}". Ahora tienes 1 unidad en tu carrito.`);
-            }
-
-            console.log(`Stock actualizado después de agregar: ${currentStock - 1}`);
-        } catch (error) {
-            console.error("Error al agregar producto al carrito:", error);
-        }
-    };
-    */
-
     // ✅ Actualizar cantidad en el carrito respetando el stock en Firebase
     const updateQuantity = async (productId, amount) => {
         try {
