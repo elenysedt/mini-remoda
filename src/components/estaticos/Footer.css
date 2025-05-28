@@ -4,4 +4,6 @@ footer {
     text-align: center;
     font-size: 14px;
     color: #333;
+    width: 100%;
+    margin-top: auto;
 }

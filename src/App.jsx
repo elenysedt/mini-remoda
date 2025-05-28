@@ -19,7 +19,8 @@ const App = () => {
         const fetchCart = async () => {
             try {
                 const querySnapshot = await getDocs(collection(db, "cart"));
-                const cartItems = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                const cartItems = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); 
+                console.log("Productos en carrito:", cartItems); 
                 setCart(cartItems);
             } catch (error) {
                 console.error("Error al recuperar carrito desde Firebase:", error);
@@ -58,7 +59,16 @@ const App = () => {
                 await updateDoc(cartRef, { quantity: newQuantity });
                 setCart(prevCart => prevCart.map(item => item.id === product.id ? { ...item, quantity: newQuantity } : item));
             } else {
-                const newCartItem = { id: product.id, name: product.name, price: product.price, quantity: 1, image: product.image };
+                const newCartItem = {
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1,
+                    image: product.image,
+                    size: product.size ? product.size : "No especificada",
+                    brand: product.brand ? product.brand : "No especificada",
+                    condition: product.condition ? product.condition : "No especificada"
+                };
                 await setDoc(cartRef, newCartItem);
                 setCart(prevCart => [...prevCart, newCartItem]);
             }
@@ -115,16 +125,33 @@ const App = () => {
             console.error("Error al actualizar cantidad en el carrito:", error);
         }
     };
-    const removeFromCart = async (id) => {
-        try {
-            const cartRef = doc(db, "cart", id);
-            await deleteDoc(cartRef);
-            setCart(prevCart => prevCart.filter(item => item.id !== id));
-            alert("✅ Producto eliminado del carrito.");
-        } catch (error) {
-            console.error("Error al eliminar producto del carrito:", error);
+const removeFromCart = async (id) => {
+    try {
+        const cartRef = doc(db, "cart", id);
+        const itemSnapshot = await getDoc(cartRef);
+
+        if (!itemSnapshot.exists()) {
+            console.error("❌ El producto no está en el carrito.");
+            return;
         }
-    };
+
+        const item = itemSnapshot.data();
+        const productRef = doc(db, "ropabebe", id);
+        const productSnapshot = await getDoc(productRef);
+        let currentStock = productSnapshot.exists() ? productSnapshot.data().stock : 0;
+
+        console.log(`🔄 Restaurando stock de "${item.name}": ${currentStock} + ${item.quantity}`);
+
+        await updateDoc(productRef, { stock: currentStock + item.quantity }); // ✅ Restaurar stock
+        await deleteDoc(cartRef); // ✅ Eliminar el producto del carrito
+
+        setCart(prevCart => prevCart.filter(item => item.id !== id));
+        alert(`✅ Se eliminó "${item.name}" y el stock fue restaurado.`);
+    } catch (error) {
+        console.error("Error al eliminar producto del carrito y restaurar stock:", error);
+    }
+};
+
 
     return (
         <Router>

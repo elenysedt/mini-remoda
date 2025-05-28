@@ -2,10 +2,9 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 
-const Navbar = () => {
-    // 🔹 Usa una lógica real para obtener el usuario autenticado
+const Navbar = ({ searchTerm, setSearchTerm }) => {
     const user = null; // Cambia esto por tu método de autenticación
-    const isAdmin = user && user.role === "admin"; // 🔹 Ajusta según tu lógica
+    const isAdmin = user && user.role === "admin"; 
 
     return (
         <nav>
@@ -14,6 +13,15 @@ const Navbar = () => {
                 <li><NavLink to="/products" className={({ isActive }) => isActive ? "active" : ""}>Productos</NavLink></li>
                 <li><NavLink to="/cart" className={({ isActive }) => isActive ? "active" : ""}>Carrito</NavLink></li>
                 {isAdmin && <li><NavLink to="/admin" className={({ isActive }) => isActive ? "active" : ""}>Admin</NavLink></li>}
+
+            <div className="search-container">
+                <input
+                    type="text"
+                    placeholder="Buscar productos..."
+                    value={searchTerm}  // 🔹 Se actualiza con el estado global
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </div>
             </ul>
         </nav>
     );

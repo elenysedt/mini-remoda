@@ -34,8 +34,8 @@ const ProductDetail = ({ addToCart }) => {
 
     return (
         <div className="product-detail">
-            <img src={product.image} alt={product.name} className="product-image" />
             <h2>{product.name}</h2>
+            <img src={product.image} alt={product.name} className="product-image" />
             <p>Precio: ${product.price} ARS</p>
             <p>Talla: {product.size}</p>
             <p>Color: {product.color}</p>

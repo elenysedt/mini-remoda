@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../firebaseConfig";
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
+import "../components/ProductList.css"; 
 
-const Products = ({ addToCart }) => {
+const Products = ({ addToCart, searchTerm }) => { // 🔹 Ahora recibe searchTerm como prop
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -33,9 +33,9 @@ const Products = ({ addToCart }) => {
         };
 
         fetchProducts();
-    }, [addToCart]); // 🔹 Ahora se actualiza cuando cambia el carrito
+    }, [addToCart]); 
 
-    // ✅ Filtrar productos según el término de búsqueda
+    // ✅ Filtrar productos según el término de búsqueda recibido como prop
     const filteredProducts = searchTerm
         ? products.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()))
         : products;
@@ -52,13 +52,6 @@ const Products = ({ addToCart }) => {
         <div className="product-container">
             <h2>Productos disponibles</h2>
             
-            {/* 🔍 Campo de búsqueda */}
-            <input
-                type="text"
-                placeholder="Buscar producto..."
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-
             <div className="product-grid">
                 {filteredProducts.map((p) => (
                     <div className="product-card" key={p.id}>

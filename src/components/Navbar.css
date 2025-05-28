@@ -3,7 +3,7 @@ nav {
     height: 50px; /* 🔄 Ajusta la altura a algo más estilizado */
     background-color: #f4f4f4; /* 🔄 Recupera el color original */
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     padding: 10px 0;
     position: fixed; /* 🔄 Fija el navbar en la parte superior */
@@ -51,4 +51,38 @@ nav a:hover {
 
 nav a:hover {
   background-color: #ddd;
+}
+
+.search-container {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+.search-container input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #B3D9FF;
+    color: #000;
+}
+
+.search-container input::placeholder {
+    color: #555; /* 🔹 Hace que el placeholder sea visible */
+}
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-container {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .search-container input {
+        width: 80%;
+        text-align: center; /* 🔹 Ajusta la posición del texto en móviles */
+    }
 }
