@@ -10,12 +10,15 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await login(email, password);
+        const success = await login(email, password);
 
-        if (isAdmin) {
-            navigate("/admin"); // 🔹 Redirigir al panel de administración si es admin
+        if (success) {
+            navigate("/admin");
+        } else {
+            alert("Credenciales inválidas o usuario no autorizado.");
         }
     };
+
 
     return (
         <div>

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+/*import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/estaticos/Footer";
 import Home from "./pages/Home";
@@ -11,6 +11,7 @@ import ProductDetail from "./pages/ProductDetail";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminPanel from "./pages/AdminPanel";
 import Login from "./pages/Login";
+import { CartProvider } from "./context/CartContext";
 
 const App = () => {
     const [cart, setCart] = useState([]);
@@ -167,6 +168,38 @@ const removeFromCart = async (id) => {
                         path="/cart"
                         element={<Cart cart={cart} setCart={setCart} updateQuantity={updateQuantity} removeFromCart={removeFromCart} />}
                     />
+                </Routes>
+            </main>
+            <Footer />
+        </Router>
+    );
+};
+
+export default App;*/
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Footer from "./components/estaticos/Footer";
+import Home from "./pages/Home";
+import Products from "./pages/Products";
+import Cart from "./pages/Cart";
+import ProductDetail from "./pages/ProductDetail";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminPanel from "./pages/AdminPanel";
+import Login from "./pages/Login";
+
+const App = () => {
+    return (
+        <Router>
+            <Navbar />
+            <main>
+                <Routes>
+                    <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/" element={<Home />} />
+                    <Route path="/products/:productId" element={<ProductDetail />} />
+                    <Route path="/products" element={<Products />} />
+                    <Route path="/cart" element={<Cart />} />
                 </Routes>
             </main>
             <Footer />

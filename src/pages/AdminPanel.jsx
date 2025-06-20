@@ -1,58 +1,121 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { db } from "../firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import ProductForm from "../components/ProductForm";
+import "./AdminPanel.css";
 
 const AdminPanel = () => {
-    const [newProduct, setNewProduct] = useState({
-        name: "", price: "", brand: "", category: "", condition: "",
-        size: "", color: "", stock: "", image: "",
-    });
+    const [selectedOption, setSelectedOption] = useState("home");
+    const [products, setProducts] = useState([]);
+    const [editingProduct, setEditingProduct] = useState(null);
 
-    const colorOptions = ["Rojo", "Azul", "Verde", "Amarillo", "Negro", "Blanco", "Rosa", "Celeste"];
-    const baseImageURL = "https://raw.githubusercontent.com/elenysedt/mini-remoda/master/public/images/";
+    const fetchProducts = async () => {
+        const querySnapshot = await getDocs(collection(db, "ropabebe"));
+        const fetched = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setProducts(fetched);
+    };
 
-    const handleAddProduct = async () => {
-        const { name, price, stock, brand, category, condition, size, color, image } = newProduct;
+    useEffect(() => {
+        fetchProducts();
+    }, []);
 
-        if (!name || !price || !stock || !brand || !category || !condition || !size || !color || !image) {
-            alert("Completa todos los datos correctamente.");
-            return;
-        }
-
+    const handleCreate = async (formData) => {
         try {
-            await addDoc(collection(db, "ropabebe"), { ...newProduct, image: `${baseImageURL}${image}` });
-            alert("Producto agregado correctamente!");
-            setNewProduct({ name: "", price: "", brand: "", category: "", condition: "", size: "", color: "", stock: "", image: "" }); // ✅ Limpiar formulario después de guardar
-        } catch (error) {
-            console.error("Error al agregar producto:", error);
+            const baseURL = "https://raw.githubusercontent.com/elenysedt/mini-remoda/master/public/images/";
+            const newProduct = { ...formData, image: `${baseURL}${formData.image}` };
+            await addDoc(collection(db, "ropabebe"), newProduct);
+            await fetchProducts();
+            setSelectedOption("list");
+        } catch (e) {
+            alert("Error al agregar producto.");
+            console.error(e);
         }
     };
 
+    const handleUpdate = async (formData) => {
+        try {
+            const docRef = doc(db, "ropabebe", editingProduct.id);
+            await updateDoc(docRef, formData);
+            await fetchProducts();
+            setEditingProduct(null);
+            setSelectedOption("list");
+        } catch (e) {
+            alert("Error al actualizar.");
+            console.error(e);
+        }
+    };
+
+    const handleDelete = async (productId) => {
+        const confirm = window.confirm("¿Eliminar este producto?");
+        if (!confirm) return;
+        await deleteDoc(doc(db, "ropabebe", productId));
+        await fetchProducts();
+    };
+
+    const renderContent = () => {
+        if (selectedOption === "add") {
+            return (
+                <>
+                    <h2>Agregar nuevo producto</h2>
+                    <ProductForm onSubmit={handleCreate} />
+                </>
+            );
+        }
+
+        if (selectedOption === "edit" && editingProduct) {
+            return (
+                <>
+                    <h2>Editar producto</h2>
+                    <ProductForm onSubmit={handleUpdate} initialData={editingProduct} />
+                </>
+            );
+        }
+
+        if (selectedOption === "list") {
+            return (
+                <>
+                    <h2>Lista de productos</h2>
+                    <div className="product-grid-admin">
+                        {products.map((p) => (
+                            <div key={p.id} className="admin-card">
+                                <div className="admin-card-content">
+                                    <img src={p.image} alt={p.name} className="admin-thumbnail" />
+                                    <div className="admin-info">
+                                        <p><strong>{p.name}</strong></p>
+                                        <p>Precio: ${p.price}</p>
+                                        <p>Stock: {p.stock}</p>
+                                        <div className="admin-buttons">
+                                            <button onClick={() => {
+                                                setEditingProduct(p);
+                                                setSelectedOption("edit");
+                                            }}>✏️ Editar</button>
+
+                                            <button onClick={() => handleDelete(p.id)}>🗑️ Eliminar</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        ))}
+                    </div>
+                </>
+            );
+        }
+
+        return <p>Bienvenida al panel de administración, El3nys 🧸. Elegí una opción del menú.</p>;
+    };
+
     return (
-        <div>
-            <h2>Panel de Administración</h2>
-            <input type="text" placeholder="Nombre" value={newProduct.name} onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })} />
-            <input type="text" placeholder="Precio" value={newProduct.price} onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })} />
-            <input type="text" placeholder="Marca" value={newProduct.brand} onChange={(e) => setNewProduct({ ...newProduct, brand: e.target.value })} />
-            <input type="text" placeholder="Categoría" value={newProduct.category} onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })} />
-            <input type="text" placeholder="Estado (Nuevo/Usado)" value={newProduct.condition} onChange={(e) => setNewProduct({ ...newProduct, condition: e.target.value })} />
-            <input type="text" placeholder="Talla" value={newProduct.size} onChange={(e) => setNewProduct({ ...newProduct, size: e.target.value })} />
+        <div className="admin-panel">
+            <nav className="admin-menu">
+                <button onClick={() => setSelectedOption("add")}>➕ Agregar producto</button>
+                <button onClick={() => setSelectedOption("list")}>📦 Ver lista</button>
+            </nav>
 
-            {/* ✅ Selección de color con dropdown */}
-            <select value={newProduct.color} onChange={(e) => setNewProduct({ ...newProduct, color: e.target.value })}>
-                <option value="">Selecciona un color</option>
-                {colorOptions.map((color, index) => (
-                    <option key={index} value={color}>{color}</option>
-                ))}
-            </select>
-
-            <input type="text" placeholder="Stock" value={newProduct.stock} onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })} />
-
-            {/* ✅ Nombre de imagen sin URL completa */}
-            <input type="text" placeholder="Nombre de imagen (ej. producto.jpg)" value={newProduct.image}
-                onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })} />
-
-            <button onClick={handleAddProduct}>Agregar Producto</button>
+            <section className="admin-content">
+                {renderContent()}
+            </section>
         </div>
     );
 };

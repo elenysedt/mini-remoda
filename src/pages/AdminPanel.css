@@ -1,0 +1,84 @@
+.admin-menu {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.menu-button {
+  background-color: #f06292;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin: 0 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.menu-button:hover {
+  background-color: #e1e1e1;
+}
+
+.admin-card {
+  width: 320px;
+  background: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.admin-card-content {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.admin-thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.admin-info p {
+  margin: 4px 0;
+}
+
+.admin-buttons {
+  margin-top: 8px;
+  display: flex;
+  gap: 6px;
+}
+
+.admin-buttons button {
+  background-color: #f06292;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.admin-buttons button:hover {
+  background-color: #e1e1e1;
+}
+
+
+
+.product-grid-admin {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+

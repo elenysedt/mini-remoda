@@ -25,10 +25,12 @@ const login = async (email, password) => {
             setUser(userCredential.user);
             setIsAdmin(true);
             console.log("✅ Usuario tiene rol de administrador.");
+            return true;
         } else {
             console.log("❌ Usuario no es administrador.");
             alert("No tienes permisos de administrador.");
             await signOut(auth);
+            return false;
         }
     } catch (error) {
         console.error("Error al iniciar sesión:", error);

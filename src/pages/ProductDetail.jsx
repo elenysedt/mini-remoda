@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { useParams } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 import "./ProductDetail.css"; // 🔹 Agregamos estilos
 
-const ProductDetail = ({ addToCart }) => {
+const ProductDetail = () => {
+    const { addToCart } = useCart();
     const { productId } = useParams();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -40,7 +42,11 @@ const ProductDetail = ({ addToCart }) => {
             <p>Talla: {product.size}</p>
             <p>Color: {product.color}</p>
             <p>Descripción: {product.description}</p>
-            <button className="add-to-cart-btn" onClick={() => addToCart(product)}>Agregar al carrito</button>
+            {product.stock > 0 ? (
+                <button className="add-to-cart-btn" onClick={() => addToCart(product)}>Agregar al carrito</button>
+            ) : (
+                <button className="out-of-stock-btn" disabled>❌ Sin stock</button>
+            )}
         </div>
     );
 };

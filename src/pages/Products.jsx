@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { db } from "../firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
-import "../components/ProductList.css"; 
+import { useCart } from "../context/CartContext";
+import "../components/ProductList.css";
 
-const Products = ({ addToCart, searchTerm }) => { // 🔹 Ahora recibe searchTerm como prop
+const Products = ({ searchTerm }) => {
+    const { addToCart } = useCart();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -33,7 +35,7 @@ const Products = ({ addToCart, searchTerm }) => { // 🔹 Ahora recibe searchTer
         };
 
         fetchProducts();
-    }, [addToCart]); 
+    }, []);
 
     // ✅ Filtrar productos según el término de búsqueda recibido como prop
     const filteredProducts = searchTerm
@@ -51,7 +53,7 @@ const Products = ({ addToCart, searchTerm }) => { // 🔹 Ahora recibe searchTer
     return (
         <div className="product-container">
             <h2>Productos disponibles</h2>
-            
+
             <div className="product-grid">
                 {filteredProducts.map((p) => (
                     <div className="product-card" key={p.id}>
@@ -63,7 +65,7 @@ const Products = ({ addToCart, searchTerm }) => { // 🔹 Ahora recibe searchTer
                             <button className="details-btn">Ver detalles</button>
                         </Link>
                         {p.stock > 0 ? (
-                            <button className="add-to-cart-btn" onClick={() => addToCart(p)}>Agregar al carrito</button>
+                            <button className="add-to-cart-btn" onClick={() => addToCart(product)}>Agregar al carrito</button>
                         ) : (
                             <button className="out-of-stock-btn" disabled>❌ Sin stock</button>
                         )}

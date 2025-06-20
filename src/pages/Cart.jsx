@@ -1,70 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { db } from "../firebaseConfig";
-import { collection, getDocs, updateDoc, doc, deleteDoc, getDoc, writeBatch } from "firebase/firestore";
+import React from "react";
+import { useCart } from "../context/CartContext";
 import "./Cart.css";
 
-const Cart = ({ removeFromCart, updateQuantity, cart, setCart }) => {
-    const [loading, setLoading] = useState(true);
+const Cart = () => {
+    const { cart, updateQuantity, removeFromCart, clearCart } = useCart();
 
-    useEffect(() => {
-        const fetchCart = async () => {
-            try {
-                const querySnapshot = await getDocs(collection(db, "cart"));
-                const cartItems = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-                // 🔄 Filtrar productos duplicados e inválidos
-                const validItems = cartItems.filter((item, index, self) =>
-                    item.name && item.price &&
-                    index === self.findIndex(p => p.id === item.id)
-                );
-
-                setCart(validItems);
-                setLoading(false);
-            } catch (error) {
-                console.error("Error al cargar carrito desde Firebase:", error);
-                setLoading(false);
-            }
-        };
-
-        fetchCart();
-    }, []);
-
-    if (loading) return <p>Cargando carrito...</p>;
-
-    // ✅ Calcular total de compra
     const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-
-    // ✅ Función para vaciar carrito
-    const clearCart = async () => {
-        if (!window.confirm("¿Seguro que quieres vaciar el carrito? Esta acción no se puede deshacer.")) return;
-
-        try {
-            const cartRef = collection(db, "cart");
-            const querySnapshot = await getDocs(cartRef);
-            const batch = writeBatch(db);
-
-            for (const docSnap of querySnapshot.docs) {
-                const item = docSnap.data();
-                if (!item || typeof item.quantity !== "number" || isNaN(item.quantity)) continue;
-
-                const productRef = doc(db, "ropabebe", item.id);
-                const productSnapshot = await getDoc(productRef);
-                let currentStock = productSnapshot.exists() ? productSnapshot.data().stock : 0;
-
-                if (typeof currentStock === "number" && !isNaN(currentStock)) {
-                    batch.update(productRef, { stock: Math.max(0, currentStock + item.quantity) });
-                }
-
-                batch.delete(docSnap.ref);
-            }
-
-            await batch.commit();
-            setCart([]);
-            console.log("Carrito vaciado correctamente y stock restaurado.");
-        } catch (error) {
-            console.error("Error al vaciar el carrito y restaurar stock:", error);
-        }
-    };
 
     return (
         <div>
@@ -82,21 +23,24 @@ const Cart = ({ removeFromCart, updateQuantity, cart, setCart }) => {
                                 <p><strong>Talla:</strong> {item.size}</p>
                                 <p><strong>Cantidad:</strong> {item.quantity}</p>
                                 <div className="cart-actions">
-                                <button onClick={() => updateQuantity(item.id, -1)}>➖</button>
-                                <button
-                                    onClick={() => updateQuantity(item.id, 1)}
-                                    disabled={item.quantity >= item.stock} // ✅ Se desactiva si no hay stock disponible
-                                >
-                                    ➕
-                                </button>
-                                <button onClick={() => removeFromCart(item.id)}>Eliminar</button>
+                                    <button onClick={() => updateQuantity(item.id, -1)}>➖</button>
+                                    <button
+                                        onClick={() => updateQuantity(item.id, 1)}
+                                        disabled={item.quantity >= item.stock}
+                                    >
+                                        ➕
+                                    </button>
+                                    <button onClick={() => removeFromCart(item.id)}>Eliminar</button>
                                 </div>
                             </div>
                         </div>
                     ))}
 
                     <h3>Total: ${totalPrice.toFixed(2)} ARS</h3>
-                    <button onClick={clearCart} style={{ backgroundColor: "f090e6;", padding: "10px", borderRadius: "5px" }}>
+                    <button
+                        onClick={clearCart}
+                        style={{ backgroundColor: "#f090e6", padding: "10px", borderRadius: "5px" }}
+                    >
                         🗑️ Vaciar Carrito
                     </button>
                 </>
