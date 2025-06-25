@@ -48,11 +48,6 @@ nav a:hover {
     background-color: #ddd;
 }
 
-
-nav a:hover {
-  background-color: #ddd;
-}
-
 .search-container {
     margin-left: auto;
     display: flex;
@@ -85,4 +80,73 @@ nav a:hover {
         width: 80%;
         text-align: center; /* 🔹 Ajusta la posición del texto en móviles */
     }
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  padding-right: 40px;
+  background-color: #f4f4f4;
+  height: 60px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.nav-right {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.cart-container {
+  position: relative;
+}
+.navbar-inner {
+  max-width: 1200px; /* límite de anchura razonable */
+  margin: 0 auto;    /* centra el contenido */
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 🔷 Admin info (email + logout) */
+.admin-session {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: #f0f0f0;
+  padding: 0.3rem 0.8rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  margin-left: 1rem;
+}
+
+.admin-session span {
+  font-weight: 500;
+  color: #333;
+}
+
+.logout-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.logout-btn:hover {
+  background-color: #c0392b;
 }

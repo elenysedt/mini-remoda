@@ -1,28 +1,72 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./Navbar.css";
+import { useCart } from "../context/CartContext";
+import CarritoPreview from "./CarritoPreview";
+import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const Navbar = ({ searchTerm, setSearchTerm }) => {
-    const user = null; // Cambia esto por tu método de autenticación
-    const isAdmin = user && user.role === "admin"; 
+    const [showCart, setShowCart] = useState(false);
+    const { cart } = useCart();
+    const navigate = useNavigate();
+
+    const { user, isAdmin, logout } = useAuth();
+
+    const handleLogout = () => {
+        logout();
+        navigate("/");
+        toast.info("Sesión cerrada. ¡Hasta pronto!");
+    };
 
     return (
-        <nav>
-            <ul>
-                <li><NavLink to="/" className={({ isActive }) => isActive ? "active" : ""}>Inicio</NavLink></li>
-                <li><NavLink to="/products" className={({ isActive }) => isActive ? "active" : ""}>Productos</NavLink></li>
-                <li><NavLink to="/cart" className={({ isActive }) => isActive ? "active" : ""}>Carrito</NavLink></li>
-                {isAdmin && <li><NavLink to="/admin" className={({ isActive }) => isActive ? "active" : ""}>Admin</NavLink></li>}
+        <nav className="navbar">
+            <div className="navbar-inner">
+                <ul className="nav-links">
+                    <li>
+                        <NavLink to="/" className={({ isActive }) => isActive ? "active" : ""}>Inicio</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/products" className={({ isActive }) => isActive ? "active" : ""}>Productos</NavLink>
+                    </li>
+                    {isAdmin && (
+                        <li>
+                            <NavLink to="/admin" className={({ isActive }) => isActive ? "active" : ""}>Admin</NavLink>
+                        </li>
+                    )}
+                </ul>
 
-            <div className="search-container">
-                <input
-                    type="text"
-                    placeholder="Buscar productos..."
-                    value={searchTerm}  // 🔹 Se actualiza con el estado global
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
+                <div className="nav-right">
+                    <div className="search-container">
+                        <input
+                            type="text"
+                            placeholder="Buscar productos..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="cart-container">
+                        <NavLink
+                            to="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setShowCart(prev => !prev);
+                            }}
+                        >
+                            🛒 {cart.length > 0 && <span>({cart.length})</span>}
+                        </NavLink>
+                        {showCart && <CarritoPreview onClose={() => setShowCart(false)} />}
+                    </div>
+
+                    {isAdmin && user && (
+                        <div className="admin-session">
+                            <span>👩‍💻 {user.email}</span>
+                            <button onClick={handleLogout} className="logout-btn">Cerrar sesión</button>
+                        </div>
+                    )}
+                </div>
             </div>
-            </ul>
         </nav>
     );
 };

@@ -2,6 +2,9 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { db } from "../firebaseConfig";
 import { collection, getDocs, doc, getDoc, setDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { writeBatch } from "firebase/firestore";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 // Crear el contexto
 const CartContext = createContext();
@@ -32,14 +35,17 @@ export const CartProvider = ({ children }) => {
         const productSnapshot = await getDoc(productRef);
         let currentStock = productSnapshot.data().stock;
 
-        if (currentStock <= 0) return alert("Sin stock disponible");
+        if (currentStock <= 0) {
+            toast.info("⚠️ Sin stock disponible");
+            return;
+        }
 
         const exists = cart.find(item => item.id === product.id);
         let newQuantity = exists ? exists.quantity + 1 : 1;
 
         if (exists) {
-            const confirm = window.confirm(`Ya tienes ${exists.quantity}. ¿Agregar otra unidad?`);
-            if (!confirm) return;
+            //const confirm = window.confirm(`Ya tienes ${exists.quantity}. ¿Agregar otra unidad?`);if (!confirm) return;
+            toast.info(`Ya tienes ${exists.quantity}. Agregando otra unidad...`);
             await updateDoc(cartRef, { quantity: newQuantity });
             setCart(prev => prev.map(item => item.id === product.id ? { ...item, quantity: newQuantity } : item));
         } else {
@@ -59,6 +65,7 @@ export const CartProvider = ({ children }) => {
         }
 
         await updateDoc(productRef, { stock: currentStock - 1 });
+toast.success(`${product.name} agregado al carrito 🛒`);
     };
 
     const updateQuantity = async (productId, amount) => {
@@ -81,7 +88,9 @@ export const CartProvider = ({ children }) => {
 
         await updateDoc(itemRef, { quantity: newQuantity });
         await updateDoc(productRef, { stock: currentStock - amount });
+        toast.info(`Cantidad actualizada a ${newQuantity}`);
         setCart(prev => prev.map(item => item.id === productId ? { ...item, quantity: newQuantity } : item));
+    toast.info(`Cantidad actualizada: ${newQuantity} unidades`);
     };
 
     const removeFromCart = async (id) => {
@@ -97,7 +106,9 @@ export const CartProvider = ({ children }) => {
         await updateDoc(productRef, { stock: currentStock + item.quantity });
         await deleteDoc(cartRef);
         setCart(prev => prev.filter(item => item.id !== id));
+        toast.success(`${item.name} eliminado del carrito 🗑️`);
     };
+
 
     const clearCart = async () => {
         if (!window.confirm("¿Seguro que quieres vaciar el carrito? Esta acción no se puede deshacer.")) return;
@@ -127,7 +138,11 @@ export const CartProvider = ({ children }) => {
             console.log("Carrito vaciado correctamente y stock restaurado.");
         } catch (error) {
             console.error("Error al vaciar el carrito:", error);
+            toast.error("Hubo un error al vaciar el carrito 😓");
+
         }
+        toast.success("Carrito vaciado correctamente 🧹");
+
     };
 
 

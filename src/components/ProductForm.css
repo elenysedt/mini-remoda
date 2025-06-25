@@ -1,0 +1,21 @@
+.image-source-toggle {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.preview-container {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.preview-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.preview-image {
+  max-width: 200px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}

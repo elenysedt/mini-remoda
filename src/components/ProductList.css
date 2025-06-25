@@ -1,91 +1,144 @@
+/* === Encabezado principal === */
 h2 {
-    background-color: #fff; /* 🔹 Fondo blanco */
-    padding: 10px; /* 🔹 Espaciado interno */
-    border-radius: 5px; /* 🔹 Bordes redondeados */
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* 🔹 Efecto de sombra para que resalte */
-    display: inline-block; /* 🔹 Ajusta el tamaño al contenido */
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  display: inline-block;
 }
 
+/* === Contenedor general === */
 .product-container {
-    text-align: center;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    max-width: 90%;
-    margin: auto;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 90%;
+  margin: auto;
 }
 
-
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Ajuste dinámico de columnas */
-    gap: 20px;
-    justify-content: center; /* Centra los productos horizontalmente */
-    padding: 10px; /* Añade espacio alrededor */
-}
-
+/* === Grilla adaptativa de productos === */
 .product-card {
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    min-width: 220px; /* 🔹 Asegura que cada producto tenga un tamaño mínimo */
-    max-width: 250px; /* 🔹 Evita que los productos sean demasiado grandes */
+  width: 100%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  min-height: 440px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease-in-out;
 }
 
 
+
+/* === Tarjetas === */
+.product-card,
+.card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease-in-out;
+  width: 100%;
+  max-width: 420px;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+/* === Imágenes === */
+.card-img-top,
 .product-image {
-    width: 120%;
-    max-width: 140px; /* 🔹 Más pequeñas para que haya más espacio */
-    height: auto;
-    border-radius: 8px;
-    object-fit: cover;
+  width: 100%;
+  max-height: 280px;
+  object-fit: contain;
+  padding: 0.75rem;
+  background-color: #fff;
+  border-radius: 0;
+  display: block;
+  margin: 0 auto;
 }
 
+/* === Botones personalizados === */
+.btn-rosa {
+  background-color: #f7c5da;
+  color: #5c2130;
+  border: none;
+}
+
+.btn-rosa:hover {
+  background-color: #f3b3cd;
+}
+
+.btn-azul {
+  background-color: #b5d5ea;
+  color: #153944;
+  border: none;
+}
+
+.btn-azul:hover {
+  background-color: #a0c4e2;
+}
+
+/* === Acciones generales === */
+.details-btn,
+.add-to-cart-btn {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
 
 .details-btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: inline-block;
-    margin-top: 10px;
+  background-color: #4CAF50;
+  color: white;
 }
 
 .details-btn:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
 
 .add-to-cart-btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 8px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
+  background-color: #4CAF50;
+  color: white;
 }
 
 .add-to-cart-btn:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
+
+/* === Mensajes de error === */
 .error-message {
-    font-size: 18px;
-    color: #D32F2F;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 10px;
+  font-size: 18px;
+  color: #D32F2F;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+}
+.card-body .btn {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
 }
 
-@media (max-width: 768px) {
-    .product-grid {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    }
 
-    .product-card {
-        max-width: 200px; /* 🔹 Asegura mejor tamaño en móviles */
-    }
+
+/* === Responsive ajustes adicionales === */
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .product-card {
+    max-width: 260px;
+  }
 }

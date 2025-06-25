@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import "./ProductForm.css";
 
 const initialFormState = {
     name: "",
@@ -16,6 +16,10 @@ const initialFormState = {
 const ProductForm = ({ onSubmit, initialData }) => {
     const [formData, setFormData] = useState(initialData || initialFormState);
     const [errors, setErrors] = useState({});
+    const [imageOption, setImageOption] = useState("local"); // "local" o "nombre"
+    const [imageFile, setImageFile] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState(null);
+
 
     const colorOptions = ["Rojo", "Azul", "Verde", "Amarillo", "Negro", "Blanco", "Rosa", "Celeste"];
 
@@ -44,7 +48,7 @@ const ProductForm = ({ onSubmit, initialData }) => {
         const newErrors = validate();
         if (Object.keys(newErrors).length > 0) return setErrors(newErrors);
 
-        if (onSubmit) onSubmit(formData);
+        if (onSubmit) onSubmit(formData, imageFile, imageOption);
         setFormData(initialFormState);
         setErrors({});
     };
@@ -67,9 +71,59 @@ const ProductForm = ({ onSubmit, initialData }) => {
                 {colorOptions.map((c, i) => <option key={i} value={c}>{c}</option>)}
             </select>
 
-            <input type="text" name="stock" placeholder="Stock" value={formData.stock} onChange={handleChange} />
-            <input type="text" name="image" placeholder="Nombre de imagen (ej. producto.jpg)" value={formData.image} onChange={handleChange} />
+            <div className="image-source-toggle">
+                <label>
+                    <input
+                        type="radio"
+                        name="imageOption"
+                        value="local"
+                        checked={imageOption === "local"}
+                        onChange={() => setImageOption("local")}
+                    />
+                    Subir desde mi compu
+                </label>
 
+                <label>
+                    <input
+                        type="radio"
+                        name="imageOption"
+                        value="nombre"
+                        checked={imageOption === "nombre"}
+                        onChange={() => setImageOption("nombre")}
+                    />
+                    Usar nombre de imagen existente
+                </label>
+            </div>
+
+            {imageOption === "local" && (
+                <>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setImageFile(e.target.files[0])}
+                    />
+                    {imageFile && (
+                        <div className="preview-container">
+                            <p className="preview-label">Vista previa:</p>
+                            <img
+                                src={URL.createObjectURL(imageFile)}
+                                alt="Vista previa"
+                                className="preview-image"
+                            />
+                        </div>
+                    )}
+                </>
+            )}
+
+            {imageOption === "nombre" && (
+                <input
+                    type="text"
+                    name="image"
+                    placeholder="Ej. producto.jpg"
+                    value={formData.image}
+                    onChange={handleChange}
+                />
+            )}
             <textarea name="description" placeholder="Descripción" value={formData.description || ""} onChange={handleChange} />
 
             {errors.description && <p className="form-error">{errors.description}</p>}

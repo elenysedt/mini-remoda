@@ -14,6 +14,9 @@ Contraseña: admin123
 
 En el panel de administración puedes agregar productos indicando su información y la imagen previamente almacenada en el repositorio. Solo es necesario escribir el nombre de la imagen junto con la extensión .jpeg.
 
+**¿Por qué usé Firebase en lugar de MockAPI?**
+
+Firebase me permite manejar autenticación real con roles (admin vs usuario), gestionar stock en tiempo real y realizar operaciones CRUD directamente en Firestore. Esta elección me permitió simular un entorno de producción más completo y dinámico, ideal para una tienda con carrito interactivo.
 
 
 

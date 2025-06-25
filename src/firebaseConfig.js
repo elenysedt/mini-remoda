@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { getAuth } from "firebase/auth"; // 🔹 Importa Firebase Authentication
+import { getStorage } from "firebase/storage";
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyDTjdYbTR0Dva5u7De4MoluFmIvitRavzQ", // 🔹 Asegúrate de agregar esto desde Firebase Console
@@ -16,3 +18,4 @@ const db = getFirestore(app);
 const auth = getAuth(app); // 🔹 Inicializa autenticación
 
 export { db, auth, collection, getDocs }; // 🔹 Ahora `auth` está disponible
+export const storage = getStorage(app);

@@ -1,8 +1,18 @@
 .admin-menu {
+  margin-top: 2rem;
   margin-bottom: 1rem;
   display: flex;
   gap: 10px;
   justify-content: center;
+}
+.admin-home-header {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.admin-welcome {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
 }
 
 .menu-button {
@@ -80,5 +90,15 @@
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
+}
+.back-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.back-button {
+  background-color: #ffcdd2;
+  color: #333;
 }
 
