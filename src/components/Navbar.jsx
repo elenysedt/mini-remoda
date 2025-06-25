@@ -5,11 +5,14 @@ import { useCart } from "../context/CartContext";
 import CarritoPreview from "./CarritoPreview";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
+import { useLocation } from "react-router-dom";
+
 
 const Navbar = ({ searchTerm, setSearchTerm }) => {
     const [showCart, setShowCart] = useState(false);
     const { cart } = useCart();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const { user, isAdmin, logout } = useAuth();
 
@@ -36,39 +39,52 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
                     )}
                 </ul>
 
-                <div className="nav-right">
-                    <div className="search-container">
-                        <input
-                            type="text"
-                            placeholder="Buscar productos..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </div>
-
-                    <div className="cart-container">
-                        <NavLink
-                            to="#"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                setShowCart(prev => !prev);
-                            }}
-                        >
-                            🛒 {cart.length > 0 && <span>({cart.length})</span>}
-                        </NavLink>
-                        {showCart && <CarritoPreview onClose={() => setShowCart(false)} />}
-                    </div>
-
-                    {isAdmin && user && (
-                        <div className="admin-session">
-                            <span>👩‍💻 {user.email}</span>
-                            <button onClick={handleLogout} className="logout-btn">Cerrar sesión</button>
-                        </div>
-                    )}
+                <div className="search-container">
+                    <input
+                        type="text"
+                        placeholder="Buscar productos..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" && searchTerm.trim()) {
+                                navigate("/products");
+                            }
+                        }}
+                    />
+                    <button
+                        className="search-btn"
+                        onClick={() => {
+                            if (searchTerm.trim()) navigate("/products");
+                        }}
+                    >
+                        🔍
+                    </button>
                 </div>
+
+
+                <div className="cart-container">
+                    <NavLink
+                        to="#"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setShowCart(prev => !prev);
+                        }}
+                    >
+                        🛒 {cart.length > 0 && <span>({cart.length})</span>}
+                    </NavLink>
+                    {showCart && <CarritoPreview onClose={() => setShowCart(false)} />}
+                </div>
+
+                {isAdmin && user && (
+                    <div className="admin-session">
+                        <span>👩‍💻 {user.email}</span>
+                        <button onClick={handleLogout} className="logout-btn">Cerrar sesión</button>
+                    </div>
+                )}
             </div>
-        </nav>
+        </nav >
     );
 };
+
 
 export default Navbar;
