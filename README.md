@@ -34,26 +34,4 @@
 | 🗺️ Ruteo             | React Router DOM + rutas protegidas          |
 | ☁️ Deploy            | Netlify + variables de entorno `.env`        |
 
----
-
-## 🔐 Acceso al panel de administración
-
-Podés probar la funcionalidad como administradora con las siguientes credenciales de prueba:
-
-- **Correo:** `admin@miniremoda.com`  
-- **Contraseña:** `admin123`
-
-Desde allí accederás al panel `/admin`, protegido por sesión y rol, donde podés agregar, editar o eliminar productos.
-
----
-
-## 📸 Subida de imágenes sin errores de CORS
-
-La carga de imágenes fue optimizada con ImgBB para evitar conflictos en producción. Se utiliza una API Key personalizada, protegida mediante `.env`.
-
-```js
-const response = await fetch(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`, {
-  method: "POST",
-  body: formData
-}); \`\`\`
 
