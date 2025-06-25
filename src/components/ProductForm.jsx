@@ -38,6 +38,7 @@ const ProductForm = ({ onSubmit, initialData }) => {
     const validate = () => {
         const newErrors = {};
         if (!formData.name.trim()) newErrors.name = "El nombre es obligatorio.";
+        if (!formData.stock || Number(formData.stock) < 0) newErrors.stock = "El stock debe ser mayor o igual a 0.";
         if (isNaN(Number(formData.price)) || Number(formData.price) <= 0) newErrors.price = "El precio debe ser mayor a 0.";
         if (!formData.description || formData.description.length < 10) newErrors.description = "La descripción debe tener al menos 10 caracteres.";
         return newErrors;
@@ -60,6 +61,14 @@ const ProductForm = ({ onSubmit, initialData }) => {
 
             <input type="text" name="price" placeholder="Precio" value={formData.price} onChange={handleChange} />
             {errors.price && <p className="form-error">{errors.price}</p>}
+            <input
+                type="number"
+                name="stock"
+                placeholder="Stock disponible"
+                value={formData.stock}
+                onChange={handleChange}
+            />
+            {errors.stock && <p className="form-error">{errors.stock}</p>}
 
             <input type="text" name="brand" placeholder="Marca" value={formData.brand} onChange={handleChange} />
             <input type="text" name="category" placeholder="Categoría" value={formData.category} onChange={handleChange} />

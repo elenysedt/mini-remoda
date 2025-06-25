@@ -6,6 +6,17 @@ const Cart = () => {
     const { cart, updateQuantity, removeFromCart, clearCart } = useCart();
 
     const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const generarMensajeWhatsApp = () => {
+        if (cart.length === 0) return "";
+
+        const mensaje = cart.map(
+            (item) => `🧸 ${item.name} - ${item.quantity}u x $${item.price}`
+        ).join("\n");
+
+        const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+        return `¡Hola! Quiero confirmar mi pedido:\n\n${mensaje}\n\nTotal: $${total}`;
+    };
 
     return (
         <div>
@@ -43,6 +54,17 @@ const Cart = () => {
                     >
                         🗑️ Vaciar Carrito
                     </button>
+                    {cart.length > 0 && (
+                        <a
+                            href={`https://wa.me/5491124019414?text=${encodeURIComponent(generarMensajeWhatsApp())}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="whatsapp-button"
+                        >
+                            🟢 Finalizar compra por WhatsApp
+                        </a>
+                    )}
+
                 </>
             )}
         </div>
