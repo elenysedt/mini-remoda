@@ -24,12 +24,12 @@
 
 ## 📂 Tecnologías utilizadas
 
-| Categoría             | Tecnologías                                  |
+| Categoría             | Tecnologías                                 |
 |----------------------|----------------------------------------------|
 | 🔧 Frontend          | React.js + Vite                              |
 | 🎯 Estado global     | Context API (`AuthContext`, `CartContext`)   |
 | 🔥 Backend/API       | Firebase Auth + Firestore                    |
-| 🌐 Subida de Imágenes| ImgBB API (vía fetch + variable `.env`)      |
+| 🌐 Subida de Imágenes| Subida de imágenes desde PC o por nombre     |
 | 🎨 UI & UX           | Bootstrap, CSS custom pastel, Toastify       |
 | 🗺️ Ruteo             | React Router DOM + rutas protegidas          |
 | ☁️ Deploy            | Netlify + variables de entorno `.env`        |

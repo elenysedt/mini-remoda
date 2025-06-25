@@ -77,10 +77,30 @@ const AdminPanel = () => {
         }
     };
 
-    const handleUpdate = async (formData) => {
+    const handleUpdate = async (formData, imageFile, imageOption) => {
         try {
+            const user = getAuth().currentUser;
+            if (!user) {
+                toast.error("⚠️ Debes iniciar sesión para actualizar el producto.");
+                return;
+            }
+
+            let imageUrl = formData.image; // Mantener imagen actual por defecto
+            
+            // Si se seleccionó una nueva imagen local
+            if (imageOption === "local" && imageFile) {
+                imageUrl = await uploadToImgBB(imageFile);
+                console.log("Nueva imagen subida a ImgBB:", imageUrl);
+            } 
+            // Si se cambió a imagen existente
+            else if (imageOption === "nombre" && formData.image) {
+                const baseURL = "https://raw.githubusercontent.com/elenysedt/mini-remoda/master/images/";
+                imageUrl = `${baseURL}${formData.image}`;
+            }
+
+            const updatedProduct = { ...formData, image: imageUrl };
             const docRef = doc(db, "ropabebe", editingProduct.id);
-            await updateDoc(docRef, formData);
+            await updateDoc(docRef, updatedProduct);
             await fetchProducts();
             toast.success("Cambios guardados con éxito ✍️");
             setEditingProduct(null);
