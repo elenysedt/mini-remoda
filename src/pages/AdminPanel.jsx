@@ -5,13 +5,14 @@ import ProductForm from "../components/ProductForm";
 import "./AdminPanel.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { storage } from "../firebaseConfig";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getAuth } from "firebase/auth";
 
 const AdminPanel = () => {
     const [selectedOption, setSelectedOption] = useState("home");
     const [products, setProducts] = useState([]);
     const [editingProduct, setEditingProduct] = useState(null);
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [productToDelete, setProductToDelete] = useState(null);
 
     const fetchProducts = async () => {
         const querySnapshot = await getDocs(collection(db, "ropabebe"));
@@ -20,6 +21,20 @@ const AdminPanel = () => {
             ...doc.data(),
         }));
         setProducts(fetched);
+    };
+
+    const uploadToImgBB = async (imageFile) => {
+        const formData = new FormData();
+        formData.append("image", imageFile);
+
+        const response = await fetch(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`
+            , {
+                method: "POST",
+                body: formData,
+            });
+
+        const data = await response.json();
+        return data.data.url;
     };
 
     useEffect(() => {
@@ -36,15 +51,21 @@ const AdminPanel = () => {
 
     const handleCreate = async (formData, imageFile, imageOption) => {
         try {
+            const user = getAuth().currentUser;
+            if (!user) {
+                toast.error("⚠️ Debes iniciar sesión para subir una imagen.");
+                return;
+            }
+
             let imageUrl = "";
             if (imageOption === "local" && imageFile) {
-                const storageRef = ref(storage, `productos/${Date.now()}-${imageFile.name}`);
-                await uploadBytes(storageRef, imageFile);
-                imageUrl = await getDownloadURL(storageRef);
+                imageUrl = await uploadToImgBB(imageFile);
+                console.log("Imagen subida a ImgBB:", imageUrl);
             } else if (imageOption === "nombre") {
                 const baseURL = "https://raw.githubusercontent.com/elenysedt/mini-remoda/master/public/images/";
                 imageUrl = `${baseURL}${formData.image}`;
             }
+
             const newProduct = { ...formData, image: imageUrl };
             await addDoc(collection(db, "ropabebe"), newProduct);
             await fetchProducts();
@@ -70,12 +91,9 @@ const AdminPanel = () => {
         }
     };
 
-    const handleDelete = async (productId) => {
-        const confirm = window.confirm("¿Eliminar este producto?");
-        if (!confirm) return;
-        await deleteDoc(doc(db, "ropabebe", productId));
-        await fetchProducts();
-        toast.success("Producto eliminado 🗑️");
+    const handleDelete = (productId) => {
+        setProductToDelete(productId);
+        setShowConfirm(true);
     };
 
     const renderContent = () => {
@@ -156,6 +174,31 @@ const AdminPanel = () => {
         <div className="admin-panel">
             <section className="admin-content">
                 {renderContent()}
+
+                {showConfirm && (
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <p>¿Estás segura de que querés eliminar este producto?</p>
+                            <div className="modal-buttons">
+                                <button
+                                    className="delete-button"
+                                    onClick={async () => {
+                                        await deleteDoc(doc(db, "ropabebe", productToDelete));
+                                        await fetchProducts();
+                                        toast.success("Producto eliminado 🗑️");
+                                        setShowConfirm(false);
+                                        setProductToDelete(null);
+                                    }}
+                                >
+                                    Sí, eliminar
+                                </button>
+                                <button onClick={() => setShowConfirm(false)}>
+                                    Cancelar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </section>
         </div>
     );
