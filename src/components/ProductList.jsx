@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
-import "./ProductList.css"; 
+import "./ProductList.css";
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
@@ -36,6 +36,12 @@ const ProductList = () => {
                         <h3>{product.name}</h3>
                         <p>Precio: ${product.price} ARS</p>
                         <p>Talla: {product.size}</p>
+                        {product.stock === 0 ? (
+                            <p className="sin-stock">🚫 Sin stock</p>
+                        ) : (
+                            <p className="disponible">Stock: {product.stock}</p>
+                        )}
+
                         <Link to={`/products/${product.id}`} className="details-btn">Ver detalles</Link>
                     </div>
                 ))}

@@ -129,6 +129,14 @@ h2 {
   width: 100%;
   margin-top: 8px;
 }
+.sin-stock {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+.disponible {
+  color: #4caf50;
+}
 
 
 

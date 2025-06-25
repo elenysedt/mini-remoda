@@ -65,7 +65,7 @@ export const CartProvider = ({ children }) => {
         }
 
         await updateDoc(productRef, { stock: currentStock - 1 });
-toast.success(`${product.name} agregado al carrito 🛒`);
+        toast.success(`${product.name} agregado al carrito 🛒`);
     };
 
     const updateQuantity = async (productId, amount) => {
@@ -83,14 +83,20 @@ toast.success(`${product.name} agregado al carrito 🛒`);
         const newQuantity = item.quantity + amount;
         const currentStock = productSnapshot.data().stock;
 
-        if (amount === 1 && currentStock <= 0) return alert("No hay stock suficiente");
+        if (amount > 0 && currentStock < amount) {
+            toast.info("⚠️ No hay suficiente stock para agregar más");
+            return;
+        }
+
         if (newQuantity < 1) return alert("Cantidad mínima alcanzada");
 
         await updateDoc(itemRef, { quantity: newQuantity });
         await updateDoc(productRef, { stock: currentStock - amount });
         toast.info(`Cantidad actualizada a ${newQuantity}`);
         setCart(prev => prev.map(item => item.id === productId ? { ...item, quantity: newQuantity } : item));
-    toast.info(`Cantidad actualizada: ${newQuantity} unidades`);
+        toast.dismiss();
+        toast.info(`Cantidad actualizada: ${newQuantity} unidades`);
+
     };
 
     const removeFromCart = async (id) => {
@@ -135,6 +141,7 @@ toast.success(`${product.name} agregado al carrito 🛒`);
 
             await batch.commit();
             setCart([]);
+            sessionStorage.setItem("cart-update", Date.now());
             console.log("Carrito vaciado correctamente y stock restaurado.");
         } catch (error) {
             console.error("Error al vaciar el carrito:", error);

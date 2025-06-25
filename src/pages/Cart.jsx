@@ -38,6 +38,7 @@ const Cart = () => {
                                     <button
                                         onClick={() => updateQuantity(item.id, 1)}
                                         disabled={item.quantity >= item.stock}
+                                        title={item.quantity >= item.stock ? "Stock máximo alcanzado" : "Aumentar cantidad"}
                                     >
                                         ➕
                                     </button>

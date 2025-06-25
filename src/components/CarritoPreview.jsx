@@ -19,9 +19,16 @@ const CarritoPreview = ({ onClose }) => {
       ) : (
         <ul>
           {cart.map((item) => (
-            <li key={item.id}>{item.name} x{item.quantity}</li>
+            <li key={item.id} className="preview-item">
+              <img src={item.image} alt={item.name} className="preview-img" />
+              <div>
+                <p className="preview-name">{item.name}</p>
+                <p className="preview-qty">x{item.quantity}</p>
+              </div>
+            </li>
           ))}
         </ul>
+
       )}
       <button onClick={goToCart}>Ir al carrito</button>
     </div>
