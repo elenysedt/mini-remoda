@@ -264,7 +264,7 @@ const ProductForm = ({ onSubmit, initialData }) => {
                             <div className="preview-container">
                                 <p className="preview-label">Vista previa:</p>
                                 <img
-                                    src={`https://raw.githubusercontent.com/elenysedt/mini-remoda/master/public/images/${formData.image}`}
+                                    src={`https://raw.githubusercontent.com/elenysedt/mini-remoda/master/images/${formData.image}`}
                                     alt="Vista previa"
                                     className="preview-image"
                                     onError={(e) => {
