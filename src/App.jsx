@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/estaticos/Footer";
@@ -12,16 +13,18 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
+    const [searchTerm, setSearchTerm] = useState("");
+
     return (
         <Router>
-            <Navbar />
+            <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
             <main>
                 <Routes>
                     <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/" element={<Home />} />
                     <Route path="/products/:productId" element={<ProductDetail />} />
-                    <Route path="/products" element={<Products />} />
+                    <Route path="/products" element={<Products searchTerm={searchTerm} />} />
                     <Route path="/cart" element={<Cart />} />
                 </Routes>
             </main>

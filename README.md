@@ -35,3 +35,6 @@
 | ☁️ Deploy            | Netlify + variables de entorno `.env`        |
 
 
+- **Correo:** `admin@miniremoda.com`
+- **Contraseña:** `admin123`
+Desde allí accederás al panel `/admin`, protegido por sesión y rol, donde podés agregar, editar o eliminar productos.
