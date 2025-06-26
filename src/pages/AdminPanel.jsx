@@ -86,12 +86,12 @@ const AdminPanel = () => {
             }
 
             let imageUrl = formData.image; // Mantener imagen actual por defecto
-            
+
             // Si se seleccionó una nueva imagen local
             if (imageOption === "local" && imageFile) {
                 imageUrl = await uploadToImgBB(imageFile);
                 console.log("Nueva imagen subida a ImgBB:", imageUrl);
-            } 
+            }
             // Si se cambió a imagen existente
             else if (imageOption === "nombre" && formData.image) {
                 const baseURL = "https://raw.githubusercontent.com/elenysedt/mini-remoda/master/images/";
@@ -119,29 +119,27 @@ const AdminPanel = () => {
     const renderContent = () => {
         if (selectedOption === "add") {
             return (
-                <>
-                    <h2>Agregar nuevo producto</h2>
+                <div className="form-wrapper">
                     <ProductForm onSubmit={handleCreate} />
                     <div className="back-container">
                         <button className="menu-button back-button" onClick={() => setSelectedOption("home")}>
                             🔙 Volver al menú
                         </button>
                     </div>
-                </>
+                </div>
             );
         }
 
         if (selectedOption === "edit" && editingProduct) {
             return (
-                <>
-                    <h2>Editar producto</h2>
+                <div className="form-wrapper">
                     <ProductForm onSubmit={handleUpdate} initialData={editingProduct} />
                     <div className="back-container">
                         <button className="menu-button back-button" onClick={() => setSelectedOption("home")}>
                             🔙 Volver al menú
                         </button>
                     </div>
-                </>
+                </div>
             );
         }
 
