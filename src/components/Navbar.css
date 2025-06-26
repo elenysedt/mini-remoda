@@ -1,99 +1,98 @@
-nav {
-    width: 100%;
-    height: 50px; /* 🔄 Ajusta la altura a algo más estilizado */
-    background-color: #f4f4f4; /* 🔄 Recupera el color original */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    position: fixed; /* 🔄 Fija el navbar en la parte superior */
-    top: 0;
-    left: 0;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-nav ul li {
-    display: inline-block;
-}
-
-nav ul li a {
-    text-decoration: none;
-    padding: 10px;
-    color: #333;
-    font-size: 18px;
-    transition: all 0.3s ease;
-}
-
-nav ul li a.active { /* 🔹 Se aplica automáticamente cuando la ruta está activa */
-    font-weight: bold;
-    color: #4CAF50; /* Verde para destacar */
-    border-bottom: 2px solid #4CAF50;
-}
-
-
-nav a {
-    text-decoration: none;
-    font-weight: bold;
-    color: #333;
-    padding: 8px 12px;
-    border-radius: 5px;
-}
-
-nav a:hover {
-    background-color: #ddd;
-}
-
-.search-container {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-}
-.search-container input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    background-color: #B3D9FF;
-    color: #000;
-}
-
-.search-container input::placeholder {
-    color: #555; /* 🔹 Hace que el placeholder sea visible */
-}
-@media (max-width: 768px) {
-    nav {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .search-container {
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    .search-container input {
-        width: 80%;
-        text-align: center; /* 🔹 Ajusta la posición del texto en móviles */
-    }
-}
 .navbar {
+  min-height: 60px;
+  background-color: #f4f4f4;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
   padding-right: 40px;
   background-color: #f4f4f4;
-  height: 60px;
+  height: 50px;
   position: fixed;
   width: 100%;
   top: 0;
   z-index: 100;
 }
+
+nav {
+  width: 100%;
+  height: 50px;
+  /* 🔄 Ajusta la altura a algo más estilizado */
+  background-color: #f4f4f4;
+  /* 🔄 Recupera el color original */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  position: fixed;
+  /* 🔄 Fija el navbar en la parte superior */
+  top: 0;
+  left: 0;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+nav ul li {
+  display: inline-block;
+}
+
+nav ul li a {
+  text-decoration: none;
+  padding: 10px;
+  color: #333;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+nav ul li a.active {
+  /* 🔹 Se aplica automáticamente cuando la ruta está activa */
+  font-weight: bold;
+  color: #4CAF50;
+  /* Verde para destacar */
+  border-bottom: 2px solid #4CAF50;
+}
+
+
+nav a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 5px;
+}
+
+nav a:hover {
+  background-color: #ddd;
+}
+
+.search-cart-group {
+  display: contents;
+}
+
+.search-container {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.search-container input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #B3D9FF;
+  color: #000;
+}
+
+.search-container input::placeholder {
+  color: #555;
+  /* 🔹 Hace que el placeholder sea visible */
+}
+
 
 .nav-links {
   display: flex;
@@ -110,9 +109,12 @@ nav a:hover {
 .cart-container {
   position: relative;
 }
+
 .navbar-inner {
-  max-width: 1200px; /* límite de anchura razonable */
-  margin: 0 auto;    /* centra el contenido */
+  max-width: 1200px;
+  /* límite de anchura razonable */
+  margin: 0 auto;
+  /* centra el contenido */
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -149,4 +151,117 @@ nav a:hover {
 
 .logout-btn:hover {
   background-color: #c0392b;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    margin-top: 4px;
+    height: auto;
+    padding: 6px 10px;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  nav {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  nav ul li a {
+    font-size: 14px;
+    /* 🔄 más pequeño */
+    padding: 6px;
+  }
+
+  .navbar-inner {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    align-items: stretch;
+    padding: 0 10px;
+  }
+
+  .nav-links {
+    font-size: 14px;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 4px;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .nav-right {
+    font-size: 14px;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .search-container {
+    width: 100%;
+    justify-content: center;
+    margin-top: 5px;
+    flex-shrink: 1;
+  }
+
+  .search-container input {
+    font-size: 13px;
+    width: auto;
+    max-width: 60vw;
+    padding: 5px 8px;
+    text-align: center;
+  }
+
+  .admin-session {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    margin-left: 0;
+    font-size: 13px;
+    padding: 0.2rem 0.6rem;
+  }
+
+  .logout-btn {
+    font-size: 13px;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .cart-container span {
+    font-size: 12px;
+  }
+
+  .navbar svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .search-cart-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: auto;
+    flex-wrap: nowrap;
+  }
+
+
+  .cart-container {
+    position: static;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    font-size: 16px;
+  }
+
+  .cart-container svg,
+  .cart-container i {
+    font-size: 18px;
+  }
+
 }

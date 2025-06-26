@@ -39,42 +39,33 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
                     )}
                 </ul>
 
-                <div className="search-container">
-                    <input
-                        type="text"
-                        placeholder="Buscar productos..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter" && searchTerm.trim()) {
-                                navigate("/products");
-                            }
-                        }}
-                    />
-                    <button
-                        className="search-btn"
-                        onClick={() => {
-                            if (searchTerm.trim()) navigate("/products");
-                        }}
-                    >
-                        🔍
-                    </button>
+                <div className="search-cart-group">
+                    <div className="search-container">
+                        <input
+                            type="text"
+                            placeholder="Buscar productos..."
+                            value={searchTerm}
+                            onChange={(e) => {
+                                setSearchTerm(e.target.value);
+                                if (location.pathname !== "/products") {
+                                    navigate("/products");
+                                }
+                            }}
+                        />
+                    </div>
+                    <div className="cart-container">
+                        <NavLink
+                            to="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setShowCart(prev => !prev);
+                            }}
+                        >
+                            🛒 {cart.length > 0 && <span>({cart.length})</span>}
+                        </NavLink>
+                        {showCart && <CarritoPreview onClose={() => setShowCart(false)} />}
+                    </div>
                 </div>
-
-
-                <div className="cart-container">
-                    <NavLink
-                        to="#"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            setShowCart(prev => !prev);
-                        }}
-                    >
-                        🛒 {cart.length > 0 && <span>({cart.length})</span>}
-                    </NavLink>
-                    {showCart && <CarritoPreview onClose={() => setShowCart(false)} />}
-                </div>
-
                 {isAdmin && user && (
                     <div className="admin-session">
                         <span>👩‍💻 {user.email}</span>
